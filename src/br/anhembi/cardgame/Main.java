@@ -1,5 +1,7 @@
 package br.anhembi.cardgame;
+import br.anhembi.cardgame.exception.JogoJaIniciouException;
 import br.anhembi.cardgame.manager.UnoManager;
+import br.anhembi.cardgame.model.Jogador;
 
 import java.util.Scanner;
 
@@ -53,8 +55,24 @@ public class Main {
                     System.out.println("~-~-~- Baralho -~-~-~");
                     System.out.println(unoManager.mostrarBaralho());
                     break;
+                case 3:
+                    System.out.print("Digite o nome do jogador: ");
+                    String nome = in.nextLine();
+                    if(nome == null || nome.equals("")){
+                        System.out.println("< Erro: O nome não pode ficar em branco >");
+                        break;
+                    }
+                    try {
+                        unoManager.addJogador(new Jogador(nome));
+                    } catch(JogoJaIniciouException ex){
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
                 case 4:
                     System.out.println("  < Jogadores >");
+                    for(Jogador jogador : unoManager.getJogadores()){
+                        System.out.println(jogador.toString());
+                    }
                     break;
                 case 5:
                     System.out.println("  < Jogo Iniciado >");
