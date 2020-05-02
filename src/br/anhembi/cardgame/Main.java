@@ -53,6 +53,12 @@ public class Main {
                     System.out.println("~-~-~- Baralho -~-~-~");
                     System.out.println(unoManager.mostrarBaralho());
                     break;
+                case 4:
+                    System.out.println("  < Jogadores >");
+                    break;
+                case 5:
+                    System.out.println("  < Jogo Iniciado >");
+                    break;
             }
         } catch(Exception ex) {
             System.out.println("A entrada deve ser um numero!");

@@ -15,19 +15,19 @@ public class Jogador {
         return nome;
     }
 
-    public void AddCarta(Carta carta) {
+    public void addCarta(Carta carta) {
         cartasNaMao.add(carta);
     }
 
-    public void RemoveCarta(Carta carta) {
+    public void removeCarta(Carta carta) {
         cartasNaMao.remove(carta);
     }
 
-    public Carta[] GetCartas() {
+    public Carta[] getCartas() {
         return cartasNaMao.toArray(new Carta[0]);
     }
 
-    public String MostrarCartas() {
+    public String mostrarCartas() {
         StringBuilder msg = new StringBuilder();
         for(Carta carta : cartasNaMao) {
             msg.append(carta.toString()).append(System.lineSeparator());
