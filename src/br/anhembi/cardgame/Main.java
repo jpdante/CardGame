@@ -12,8 +12,6 @@ public class Main {
     private Scanner in;
     private UnoManager unoManager;
 
-
-
     public void run(String[] args) {
         running = true;
         in = new Scanner(System.in);
@@ -24,11 +22,10 @@ public class Main {
     
         while(running) {
             mostrarComandos();
-            processarComandos(in.nextLine());
+            processarComando(in.nextLine());
         }
-
-
     }
+
     public void mostrarComandos() {
         System.out.println();
         System.out.println("~-~-~- Comandos UNO -~-~-~");
@@ -41,5 +38,25 @@ public class Main {
         System.out.println("0. Sair");
         System.out.println();
         System.out.print(">");
+    }
+
+    public void processarComando(String cmd) {
+        try {
+            int option = Integer.parseInt(cmd);
+            System.out.println();
+            switch (option) {
+                case 1:
+                    unoManager.embaralharBaralho();
+                    System.out.println("  < Baralho Embaralhado >");
+                    break;
+                case 2:
+                    System.out.println("~-~-~- Baralho -~-~-~");
+                    System.out.println(unoManager.mostrarBaralho());
+                    break;
+            }
+        } catch(Exception ex) {
+            System.out.println("A entrada deve ser um numero!");
+            System.out.println("Exception: Falha ao converter '" + cmd + "' para um numero inteiro.");
+        }
     }
 }
