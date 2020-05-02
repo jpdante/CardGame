@@ -33,10 +33,12 @@ public class Main {
         System.out.println("~-~-~- Comandos UNO -~-~-~");
         System.out.println("1. Embaralhar Baralho");
         System.out.println("2. Mostrar Baralho");
-        System.out.println("3. Adicionar jogador");
+        System.out.println("3. Adicionar Jogador");
         System.out.println("4. Mostrar Jogadores");
         System.out.println("5. Iniciar Jogo");
         System.out.println("6. Mostrar Mesa");
+        System.out.println("7. Comprar Carta");
+        System.out.println("8. Jogar Carta");
         System.out.println("0. Sair");
         System.out.println();
         System.out.print(">");
@@ -75,7 +77,22 @@ public class Main {
                     }
                     break;
                 case 5:
+                    unoManager.iniciarJogo();
                     System.out.println("  < Jogo Iniciado >");
+                    break;
+                case 6:
+                    System.out.println("  < Carta da Mesa >");
+                    unoManager.mostrarMesa();
+                    break;
+                case 7:
+                    //precisa do jogador como parametro
+                    unoManager.comprarCarta();
+                    System.out.println("  < Carta comprada >");
+                    break;
+                case 8:
+                    //precisa do jogador e de alguma carta como parametro
+                    System.out.println("  < Carta jogada >");
+                    unoManager.jogarCarta();
                     break;
             }
         } catch(Exception ex) {

@@ -13,9 +13,11 @@ import java.util.Stack;
 public class UnoManager {
     private boolean iniciou;
     private Stack<Carta> baralho;
+    private Stack<Carta> mesa;
     private LinkedList<Jogador> jogadores;
 
     public UnoManager(){
+        mesa = new Stack<>();
         baralho = new Stack<>();
         jogadores = new LinkedList<>();
     }
@@ -93,6 +95,45 @@ public class UnoManager {
                 numero = 1;
             }
         }
+    }
+
+    public void iniciarJogo(){
+        inicializarBaralho();
+        embaralharBaralho();
+
+        for(Jogador jogador : jogadores){
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+            jogador.addCarta(baralho.pop());
+        }
+        mesa.push(baralho.pop());
+    }
+
+    public void mostrarMesa(){
+        mesa.peek().toString();
+    }
+
+    public void comprarCarta(Jogador jogador){
+        if(baralho.size() > 0){
+            jogador.addCarta(baralho.pop());
+        } else{
+            Carta emJogo = mesa.pop();
+            for(Carta carta : mesa){
+                baralho.push(mesa.pop());
+            }
+            embaralharBaralho();
+            mesa.push(emJogo);
+            jogador.addCarta(baralho.pop());
+        }
+    }
+
+    public void jogarCarta(Jogador jogador, Carta carta){
+            mesa.push(carta);
+            jogador.removeCarta(carta);
     }
 
 }
