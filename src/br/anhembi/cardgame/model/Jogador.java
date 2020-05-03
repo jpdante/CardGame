@@ -9,10 +9,11 @@ public class Jogador {
 
     public Jogador(String nome) {
         cartasNaMao = new ArrayList<>();
+        this.nome = nome;
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public void addCarta(Carta carta) {

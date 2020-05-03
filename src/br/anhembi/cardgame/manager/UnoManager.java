@@ -68,6 +68,10 @@ public class UnoManager {
         return jogadores.toArray(new Jogador[0]);
     }
 
+    public LinkedList<Jogador> getListaJogadores(){
+        return jogadores;
+    }
+
     private void inicializar4(TipoCarta tipo){
         baralho.push(new Carta(tipo));
         baralho.push(new Carta(tipo));
@@ -113,8 +117,8 @@ public class UnoManager {
         mesa.push(baralho.pop());
     }
 
-    public void mostrarMesa(){
-        mesa.peek().toString();
+    public String mostrarMesa(){
+        return mesa.peek().toString();
     }
 
     public void comprarCarta(Jogador jogador){

@@ -13,6 +13,7 @@ public class Main {
     private boolean running;
     private Scanner in;
     private UnoManager unoManager;
+    boolean jogoIniciado = false;
 
     public void run(String[] args) {
         running = true;
@@ -66,34 +67,58 @@ public class Main {
                     }
                     try {
                         unoManager.addJogador(new Jogador(nome));
+                        System.out.println("  < Jogado criado >");
                     } catch(JogoJaIniciouException ex){
                         System.out.println(ex.getMessage());
                     }
                     break;
                 case 4:
                     System.out.println("  < Jogadores >");
-                    for(Jogador jogador : unoManager.getJogadores()){
-                        System.out.println(jogador.toString());
+                    if(unoManager.getListaJogadores().size() == 0){
+                        System.out.println("  < Não existem jogadores no momento >");
+                    } else{
+                        for(Jogador jogador : unoManager.getJogadores()){
+                            System.out.println(jogador.toString());
+                        }
                     }
                     break;
                 case 5:
-                    unoManager.iniciarJogo();
-                    System.out.println("  < Jogo Iniciado >");
+                    if(jogoIniciado == false){
+                        if(unoManager.getListaJogadores().size() < 2){
+                            System.out.println("  < Crie pelo menos 2 jogadores >");
+                        } else {
+                            unoManager.iniciarJogo();
+                            System.out.println("  < Jogo Iniciado >");
+                            jogoIniciado = true;
+                        }
+                    } else {
+                        System.out.println("  < Opa! O jogo já foi iniciado >");
+                    }
                     break;
                 case 6:
-                    System.out.println("  < Carta da Mesa >");
-                    unoManager.mostrarMesa();
+                    if(jogoIniciado == true){
+                        System.out.println("  < Carta da Mesa >");
+                        System.out.println(unoManager.mostrarMesa());
+                    } else{
+                        System.out.println("< Inicie o jogo primeiro :) >");
+                    }
                     break;
                 case 7:
                     //precisa do jogador como parametro
-                    unoManager.comprarCarta();
+                    //unoManager.comprarCarta();
                     System.out.println("  < Carta comprada >");
                     break;
                 case 8:
                     //precisa do jogador e de alguma carta como parametro
                     System.out.println("  < Carta jogada >");
-                    unoManager.jogarCarta();
+                    //unoManager.jogarCarta();
                     break;
+                case 0:
+                    System.out.println("  < Obrigado por jogar! >");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("  < Digite uma opção válida >");
             }
         } catch(Exception ex) {
             System.out.println("A entrada deve ser um numero!");
