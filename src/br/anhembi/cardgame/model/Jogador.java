@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 public class Jogador {
 
+    private int id;
     private String nome;
     private ArrayList<Carta> cartasNaMao;
 
-    public Jogador(String nome) {
+    public Jogador(int id, String nome) {
+        this.id = id;
         cartasNaMao = new ArrayList<>();
         this.nome = nome;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getNome() {
@@ -28,16 +34,25 @@ public class Jogador {
         return cartasNaMao.toArray(new Carta[0]);
     }
 
+    public boolean constainsCarta(Carta carta) {
+        return cartasNaMao.contains(carta);
+    }
+
     public String mostrarCartas() {
         StringBuilder msg = new StringBuilder();
+        int last = 0;
         for(Carta carta : cartasNaMao) {
-            msg.append(carta.toString()).append(System.lineSeparator());
+            if(last == cartasNaMao.size() - 1) {
+                msg.append(carta.toString()).append(System.lineSeparator());
+            } else {
+                msg.append("    ").append(carta.toString()).append(',').append(System.lineSeparator());
+            }
         }
         return msg.toString();
     }
 
     @Override
     public String toString() {
-        return "Jogador{" + "nome='" + nome + '\'' + ", cartasNaMao=" + cartasNaMao + '}';
+        return "Jogador{" + "id=" + id + ", nome='" + nome + '\'' + ", cartasNaMao=[" + System.lineSeparator() + mostrarCartas() + "]}";
     }
 }

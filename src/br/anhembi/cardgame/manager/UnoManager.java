@@ -15,14 +15,16 @@ public class UnoManager {
     private Stack<Carta> baralho;
     private Stack<Carta> mesa;
     private LinkedList<Jogador> jogadores;
+    private int nextId;
 
-    public UnoManager(){
+    public UnoManager() {
         mesa = new Stack<>();
         baralho = new Stack<>();
         jogadores = new LinkedList<>();
+        nextId = 0;
     }
 
-    public void inicializarBaralho(){
+    public void inicializarBaralho() {
         inicializarNumericaColorida(CorCarta.Vermelha);
         inicializarNumericaColorida(CorCarta.Amarela);
         inicializarNumericaColorida(CorCarta.Verde);
@@ -34,7 +36,7 @@ public class UnoManager {
 
         inicializar4(TipoCarta.Curinga);
         inicializar4(TipoCarta.CuringaComprar4);
-        
+
         baralho.push(new Carta(TipoCarta.CuringaTrocarMao));
     }
 
@@ -42,8 +44,8 @@ public class UnoManager {
         Collections.shuffle(baralho);
     }
 
-    public String mostrarBaralho(){
-        if (baralho.empty()){
+    public String mostrarBaralho() {
+        if (baralho.empty()) {
             return "O baralho está vazio!";
         } else {
             StringBuilder msg = new StringBuilder();
@@ -54,13 +56,21 @@ public class UnoManager {
         }
     }
 
+    public int getNextId() {
+        return ++this.nextId;
+    }
+
+    public boolean estaIniciado() {
+        return this.iniciou;
+    }
+
     public void addJogador(Jogador jogador) throws JogoJaIniciouException {
-        if(iniciou) throw new JogoJaIniciouException("Nao é possivel adicionar jogadores no meio do jogo!");
+        if (iniciou) throw new JogoJaIniciouException("Nao é possivel adicionar jogadores no meio do jogo!");
         jogadores.add(jogador);
     }
 
     public void removeJogador(Jogador jogador) throws JogoJaIniciouException {
-        if(iniciou) throw new JogoJaIniciouException("Nao é possivel remover jogadores no meio do jogo!");
+        if (iniciou) throw new JogoJaIniciouException("Nao é possivel remover jogadores no meio do jogo!");
         jogadores.remove(jogador);
     }
 
@@ -68,18 +78,48 @@ public class UnoManager {
         return jogadores.toArray(new Jogador[0]);
     }
 
-    public LinkedList<Jogador> getListaJogadores(){
+    public Jogador findJogador(String info) {
+        int id = 0;
+        try {
+            id = Integer.parseInt(info);
+        } catch (Exception ignored) { }
+        for(Jogador jogador : jogadores) {
+            if (jogador.getNome().equalsIgnoreCase(info)) {
+                return jogador;
+            }
+            if (jogador.getId() == id) {
+                return jogador;
+            }
+        }
+        return null;
+    }
+
+    public Carta findCarta(String info, Jogador jogador) {
+        try {
+            int id = Integer.parseInt(info);
+            for(Carta carta : jogador.getCartas()) {
+                if (carta.getId() == id) {
+                    return carta;
+                }
+            }
+            return null;
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public LinkedList<Jogador> getListaJogadores() {
         return jogadores;
     }
 
-    private void inicializar4(TipoCarta tipo){
+    private void inicializar4(TipoCarta tipo) {
         baralho.push(new Carta(tipo));
         baralho.push(new Carta(tipo));
         baralho.push(new Carta(tipo));
         baralho.push(new Carta(tipo));
     }
 
-    private void inicializar8Coloridas(TipoCarta tipo){
+    private void inicializar8Coloridas(TipoCarta tipo) {
         baralho.push(new Carta(tipo, CorCarta.Vermelha));
         baralho.push(new Carta(tipo, CorCarta.Vermelha));
         baralho.push(new Carta(tipo, CorCarta.Amarela));
@@ -90,22 +130,22 @@ public class UnoManager {
         baralho.push(new Carta(tipo, CorCarta.Azul));
     }
 
-    private void inicializarNumericaColorida(CorCarta cor){
+    private void inicializarNumericaColorida(CorCarta cor) {
         int numero = 0;
-        for(int i = 0; i < 19; i++) {
+        for (int i = 0; i < 19; i++) {
             baralho.push(new Carta(TipoCarta.Numerica, cor, numero));
             numero++;
-            if(numero > 9) {
+            if (numero > 9) {
                 numero = 1;
             }
         }
     }
 
-    public void iniciarJogo(){
-        inicializarBaralho();
+    public void iniciarJogo() {
+        iniciou = true;
         embaralharBaralho();
 
-        for(Jogador jogador : jogadores){
+        for (Jogador jogador : jogadores) {
             jogador.addCarta(baralho.pop());
             jogador.addCarta(baralho.pop());
             jogador.addCarta(baralho.pop());
@@ -117,27 +157,53 @@ public class UnoManager {
         mesa.push(baralho.pop());
     }
 
-    public String mostrarMesa(){
-        return mesa.peek().toString();
+    public String mostrarMesa() {
+        if (mesa.empty()) {
+            return "O baralho está vazio!";
+        } else {
+            StringBuilder msg = new StringBuilder();
+            msg.append("Carta Atual: ")
+                    .append(mesa.peek().toString())
+                    .append(System.lineSeparator())
+                    .append(System.lineSeparator())
+                    .append("Historico:")
+                    .append(System.lineSeparator());
+            int index = 1;
+            for (Carta carta : mesa) {
+                msg.append(index)
+                        .append(": ")
+                        .append(carta.toString())
+                        .append(System.lineSeparator());
+                index++;
+            }
+            return msg.toString();
+        }
     }
 
-    public void comprarCarta(Jogador jogador){
-        if(baralho.size() > 0){
-            jogador.addCarta(baralho.pop());
-        } else{
+    public Carta comprarCarta(Jogador jogador) {
+        if (baralho.size() > 0) {
+            Carta carta = baralho.pop();
+            jogador.addCarta(carta);
+            return carta;
+        } else {
             Carta emJogo = mesa.pop();
-            for(Carta carta : mesa){
+            for (int i = 0; i < mesa.size(); i++) {
                 baralho.push(mesa.pop());
             }
             embaralharBaralho();
             mesa.push(emJogo);
-            jogador.addCarta(baralho.pop());
+            Carta carta = baralho.pop();
+            jogador.addCarta(carta);
+            return carta;
         }
     }
 
-    public void jogarCarta(Jogador jogador, Carta carta){
+    public boolean jogarCarta(Jogador jogador, Carta carta) {
+        if(jogador.constainsCarta(carta)) {
             mesa.push(carta);
             jogador.removeCarta(carta);
+            return true;
+        } else return false;
     }
 
 }
