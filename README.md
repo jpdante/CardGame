@@ -2,6 +2,9 @@
  Trabalho [Universidade Anhembi Morumbi](https://portal.anhembi.br/)\
  Estrutura de Dados - 2020
 
+### Jogo UNO
+* [UNO Documentação](https://github.com/jpdante/CardGame/blob/master/UNO.pdf)
+
 ### IDE's Compativeis
 * [Jetbrains IntelliJ IDEA](https://www.jetbrains.com/pt-br/idea/)
 * [NetBeans](https://netbeans.org/)
